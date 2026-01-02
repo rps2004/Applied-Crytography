@@ -1,0 +1,2 @@
+inequality_ok,inequality_bad,avg_candidates_safe,avg_candidates_violated,theory_safe
+True,False,101.0000,101.0000,101
