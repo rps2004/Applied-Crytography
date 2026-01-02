@@ -1,0 +1,25 @@
+Salsa20/
+├── __pycache__/
+├── salsa_DJ
+├── bench_salsa.py				(Run this file after going into Salsa20 directory)
+├── EE22B171_CS6530_Assgn1_Part1_decrypted.txt
+├── EE22B171_CS6530_Assgn1_Part1_Encrypted.txt
+├── EE22B171_CS6530_Assgn1_Part1_Readme.txt
+├── EE22B171_CS6530_Assgn1_Part1.txt
+├── EE22B171_CS6530_Assgn1_Part2.txt
+├── EE22B171_CS6530_Assgn1_Part3.txt
+├── EE22B171_Salsa20.py		(Run this file after going into Salsa20 directory)
+└── salsa_c.exe					(Run this file after going into Salsa20 directory)
+
+Chacha20/
+├── __pycache__/
+├── chacha_DJ
+├── bench_chacha.py       (Run this file after going into Chacha20 directory)
+├── chacha_c.exe			(Run this file after going into Chacha20 directory)
+├── EE22B171_ChaCha20.py  (Run this file after going into Chacha20 directory)
+├── EE22B171_CS6530_Assgn1_Part1_decrypted.txt
+├── EE22B171_CS6530_Assgn1_Part1_Encrypted.txt
+├── EE22B171_CS6530_Assgn1_Part1_Readme.txt
+├── EE22B171_CS6530_Assgn1_Part1.txt
+├── EE22B171_CS6530_Assgn1_Part2.txt
+└── EE22B171_CS6530_Assgn1_Part3.txt

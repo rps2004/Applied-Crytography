@@ -1,0 +1,54 @@
+Part 3: Benchmarking Salsa20 Implementation
+
+Files Used:
+-------------
+1. salsa-ref.c
+2. ecrypt-sync.h
+3. ecrypt-portable.h
+4. test.c (for benchmarking DJ Bernstein's implementation)
+4. bench_salsa.py (for benchmarking Python implementation)
+
+Modifications Made:
+-------------------
+- No changes were made to the original Salsa20 algorithm; it runs its standard 20-round configuration.
+- Test file (test.c) created to benchmark the C implementation on a 1 MB input file.
+
+How to Test:
+-------------
+- Run C implementation: salsa_c.exe
+- Run Python implementation: bench_salsa.py
+
+Benchmark Results:
+-----------------
+C implementation:
+command_used: salsa_c.exe
+keystream(first 64 bytes): 9a97f65b9b4c721b960a672145fca8d4e32e67f9111ea979ce9c4826806aeee63de9c0da2bd7f91ebcb2639bf989c6251b29bf38d39a9bdce7c55f4b2ac12a39
+Processed 1048576 bytes in 0.009000 seconds   (1 MB)
+Processed 10485760 bytes in 0.089000 seconds  (10 MB)
+Processed 104857600 bytes in 0.932000 seconds (100 MB)
+
+Python implementation:
+command_used: python bench_salsa.py
+keystream(first 64 bytes): 9a97f65b9b4c721b960a672145fca8d4e32e67f9111ea979ce9c4826806aeee63de9c0da2bd7f91ebcb2639bf989c6251b29bf38d39a9bdce7c55f4b2ac12a39
+Encrypted 1048576 bytes in 3.364998 seconds (1 MB)
+Encrypted 10485760 bytes in 32.938053 seconds (10 MB)
+
+Analysis:
+---------
+- The C implementation is significantly faster than the Python implementation.
+- Reasons for the speed advantage:
+  1. Low-level optimizations in C, including manual memory handling.
+  2. Compiled nature of C, which generates machine-level code directly.
+  3. Efficient arithmetic operations and minimal loop overhead.
+  4. Python’s interpreted nature adds runtime overhead.
+
+Conclusion:
+-----------
+- Salsa20 C implementation demonstrates the efficiency of low-level languages for cryptography.
+- Python implementation is suitable for prototyping or small data but is slower for large-scale encryption tasks.
+- Performance-critical cryptography libraries are often written in C or C++.
+
+Notes / Observations:
+---------------------
+- Both implementations produced correct outputs for the test input.
+- Further speed improvement in Python could be achieved using libraries like PyCryptodome, which internally use C extensions.

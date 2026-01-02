@@ -1,0 +1,108 @@
+==================================================
+Part 2: Salsa20: Encryption and Decryption
+==================================================
+
+README
+------
+This file explains how encryption and decryption were performed using Salsa20.  
+The provided Python program (EE22B171_Salsa20.py with --enc) accepts a plaintext file as input,  
+applies the Salsa20 stream cipher with a given key, nonce, and counter, and outputs  
+the encrypted file. The same program (with --dec ) can be used to  
+perform decryption.  
+
+The cipher works by generating a keystream block from the internal state, which is  
+then XORed with the input file data (plaintext or ciphertext). This ensures that  
+encryption and decryption are symmetric operations.
+
+------------------------------------------------------
+KEY / NONCE / COUNTER USED
+------------------------------------------------------
+
+Key: 0000000000000000000000000000000000000000000000000000000000000000
+Nonce: 0000000000000000
+Counter: 0
+
+------------------------------------------------------
+KEYSTREAM (First 64Bytes)
+------------------------------------------------------
+ 
+9a97f65b9b4c721b960a672145fca8d4e32e67f9111ea979
+ce9c4826806aeee63de9c0da2bd7f91ebcb2639bf989c6251
+b29bf38d39a9bdce7c55f4b2ac12a39
+
+------------------------------------------------------
+ENCRYPTION
+------------------------------------------------------
+
+Command Used:
+python EE22B171_Salsa20.py --enc --in EE22B171_CS6530_Assgn1_Part1.txt --out EE22B171_CS6530_Assgn1_Part1_Encrypted.bin  
+
+Output File Generated:
+EE22B171_CS6530_Assgn1_Part1_Encrypted.bin  
+
+Execution Time:
+0.2037618 seconds (measured during run)  
+
+File Size:
+68 KB   (matches input file size, since stream cipher does not add padding)  
+
+Explanation of Encryption:
+- The plaintext file is read in blocks.  
+- For each block, Salsa20 generates a keystream of equal length.  
+- Each byte of plaintext is XORed with the corresponding keystream byte.  
+- The resulting ciphertext bytes are written to the output file.  
+
+------------------------------------------------------
+DECRYPTION
+------------------------------------------------------
+
+Command Used:
+python EE22B171_Salsa20.py --dec --in EE22B171_CS6530_Assgn1_Part1_Encrypted.bin --out output.bin
+
+Output File Generated:
+EE22B171_CS6530_Assgn1_Part1_decrypted.bin  
+
+Execution Time:
+0.2128831 seconds  
+
+File Size:
+68 KB   (same as encrypted file size)  
+
+Explanation of Decryption:
+- Ciphertext is read in blocks.  
+- The same keystream is generated using the key, nonce, and counter.  
+- Ciphertext bytes are XORed with keystream bytes.  
+- The original plaintext is restored.  
+
+------------------------------------------------------
+COMPARISON OF ORIGINAL AND DECRYPTED FILES
+------------------------------------------------------
+Command Used on command prompt:
+fc /b EE22B171_CS6530_Assgn1_Part1.txt E22B171_CS6530_Assgn1_Part1_decrypted.bin  
+
+Output:
+No differences found.  
+
+This confirms that the encryption and decryption using Salsa20 are working correctly.  
+
+------------------------------------------------------
+NOTE ON SINGLE PROGRAM USAGE
+------------------------------------------------------
+
+Do we need two separate programs for encryption and decryption? No.
+
+Explanation:
+- Salsa20 is a symmetric stream cipher. The same keystream is used for both encryption and decryption.
+- Encryption and decryption are performed using a simple XOR operation:
+
+  Ciphertext = Plaintext XOR Keystream
+  Plaintext  = Ciphertext XOR Keystream
+
+  Applying XOR twice with the same keystream restores the original data:
+
+  (Plaintext XOR Keystream) XOR Keystream = Plaintext XOR (Keystream XOR Keystream) = Plaintext XOR 0 = Plaintext
+
+- Therefore, a single program can handle both encryption and decryption simply by toggling the mode (enc/dec).
+- Additionally, since file-to-byte conversion is already handled within the program, no separate intermediate files are required.
+
+This approach simplifies implementation and ensures correctness while keeping the workflow efficient.

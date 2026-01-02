@@ -1,0 +1,103 @@
+==================================================
+Part 2: ChaCha20: Encryption and Decryption
+==================================================
+
+README
+------
+This file explains how encryption and decryption were performed using ChaCha20.  
+The provided Python program (EE22B171_ChaCha20.py with --enc) accepts a plaintext file as input,  
+applies the ChaCha20 stream cipher with a given key, nonce, and counter, and outputs  
+the encrypted file. The same program (with --dec) can be used to  
+perform decryption.  
+
+The cipher works by generating a keystream block from the internal state, which is  
+then XORed with the input file data (plaintext or ciphertext). This ensures that  
+encryption and decryption are symmetric operations.
+
+------------------------------------------------------
+KEY / NONCE / COUNTER USED
+------------------------------------------------------
+
+Key: 0000000000000000000000000000000000000000000000000000000000000000
+Nonce: 000000000000000000000000
+Counter: 0
+
+------------------------------------------------------
+KEYSTREAM (First 64Bytes)
+------------------------------------------------------
+76b8e0ada0f13d90405d6ae55386bd28bdd219b8a08ded1aa836ef
+cc8b770dc7da41597c5157488d7724e03fb8d84a376a43b8f41518
+a11cc387b669b2ee6586
+
+------------------------------------------------------
+ENCRYPTION
+------------------------------------------------------
+
+Command Used:
+python EE22B171_ChaCha20.py --enc --in EE22B171_CS6530_Assgn1_Part1.txt --out EE22B171_CS6530_Assgn1_Part1_Encrypted.bin  
+
+Output File Generated:
+EE22B171_CS6530_Assgn1_Part1_Encrypted.bin
+
+Execution Time: 0.2379329 seconds 
+
+File Size: 68 KB   (matches input file size, since stream cipher does not add padding)  
+
+Explanation of Encryption:
+- The plaintext file is read in blocks.  
+- For each block, ChaCha20 generates a keystream of equal length.  
+- Each byte of plaintext is XORed with the corresponding keystream byte.  
+- The resulting ciphertext bytes are written to the output file.  
+
+------------------------------------------------------
+DECRYPTION
+------------------------------------------------------
+
+Command Used:
+python EE22B171_ChaCha20.py --dec --in EE22B171_CS6530_Assgn1_Part1_Encrypted.bin --out EE22B171_CS6530_Assgn1_Part1_decrypted.bin
+
+Output File Generated:
+EE22B171_CS6530_Assgn1_Part1_decrypted.bin
+
+Execution Time: 0.2414844 seconds
+
+File Size: 68 KB  (same as encrypted file size)  
+
+Explanation of Decryption:
+- Ciphertext is read in blocks.  
+- The same keystream is generated using the key, nonce, and counter.  
+- Ciphertext bytes are XORed with keystream bytes.  
+- The original plaintext is restored.  
+
+------------------------------------------------------
+COMPARISON OF ORIGINAL AND DECRYPTED FILES
+------------------------------------------------------
+Command Used on command prompt:
+fc /b EE22B171_CS6530_Assgn1_Part1.txt E22B171_CS6530_Assgn1_Part1_decrypted.bin   
+
+Output:
+No differences found.  
+
+This confirms that the encryption and decryption using ChaCha20 are working correctly.  
+
+------------------------------------------------------
+NOTE ON SINGLE PROGRAM USAGE
+------------------------------------------------------
+
+Do we need two separate programs for encryption and decryption? No.
+
+Explanation:
+- ChaCha20 is a symmetric stream cipher. The same keystream is used for both encryption and decryption.
+- Encryption and decryption are performed using a simple XOR operation:
+
+  Ciphertext = Plaintext XOR Keystream
+  Plaintext  = Ciphertext XOR Keystream
+
+  Applying XOR twice with the same keystream restores the original data:
+
+  (Plaintext XOR Keystream) XOR Keystream = Plaintext XOR (Keystream XOR Keystream) = Plaintext XOR 0 = Plaintext
+
+- Therefore, a single program can handle both encryption and decryption simply by toggling the mode (enc/dec).
+- Additionally, since file-to-byte conversion is already handled within the program, no separate intermediate files are required.
+
+This approach simplifies implementation and ensures correctness while keeping the workflow efficient.

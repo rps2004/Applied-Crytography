@@ -1,0 +1,60 @@
+Part 3: Benchmarking ChaCha20 Implementation
+
+Files Used:
+-------------
+1. chacha-ref.c
+2. ecrypt-sync.h
+3. ecrypt-portable.h
+4. test.c (for benchmarking DJ Bernstein's implementation)
+5. bench_chacha.py (for benchmarking Python implementation)
+
+Modifications Made:
+-------------------
+- In the original ChaCha20 implementation by D.J. Bernstein, the inner loop ran 8 rounds.
+- I Changed from 8 to 20 to achieve 10 double rounds for ChaCha20 alone.
+- Test file (test.c) created to benchmark the C implementation on a 1 MB input file.
+- Python benchmarking script (bench_chacha.py) created to test Python implementation on the same 1 MB input file.
+
+How to Test:
+-------------
+- Run C implementation: chacha_c.exe
+- Run Python implementation: bench_chacha.py
+
+Benchmark Results:
+-----------------
+C implementation(By D. J. Bernstein):
+command_used: chacha_c.exe
+keystream(first 64 bytes): 76b8e0ada0f13d90405d6ae55386bd28bdd219b8a08ded1aa836efcc8b770dc7da41597c5157488d7724e03fb8d84a376a43b8f41518a11cc387b669b2ee6586
+Processed 1048576 bytes in 0.0050000 seconds   (1 MB)
+Processed 10485760 bytes in 0.0600000 seconds  (10 MB)
+Processed 104857600 bytes in 0.5920000 seconds (100 MB)
+
+My Python Code:
+command_used: python bench_chacha.py
+keystream(first 64 bytes): 76b8e0ada0f13d90405d6ae55386bd28bdd219b8a08ded1aa836efcc8b770dc7da41597c5157488d7724e03fb8d84a376a43b8f41518a11cc387b669b2ee6586
+Encrypted 1048576 bytes in 3.863924 seconds (1 MB)
+Encrypted 10485760 bytes in 37.469872 seconds (10 MB)
+
+
+
+Analysis:
+---------
+- Chacha execution time comes out faster than salsa in DJ Bernstein's implementation for larger files.
+- The C implementation is significantly faster than the Python implementation.
+- This speed advantage arises due to:
+  1. **Low-level optimizations** in C, including manual memory handling.
+  2. **Compiled nature of C**, which generates machine-level code directly.
+  3. **Efficient arithmetic operations** and minimal overhead in C loops.
+  4. Python’s interpreted nature and high-level abstractions add runtime overhead.
+- Even with the same algorithm, Python is much slower for large-scale encryption due to these factors.
+
+Conclusion:
+-----------
+- DJ Bernstein’s C implementation demonstrates the efficiency of low-level languages in cryptography.
+- Python implementation is suitable for prototyping or small data but is slower for large-scale encryption tasks.
+- This benchmark highlights why performance-critical cryptography libraries are often written in C or C++.
+
+Notes / Observations:
+---------------------
+- Both implementations produced correct outputs for the test input.
+- Further speed improvement in Python could be achieved using libraries like **PyCryptodome**, which internally use C extensions.
